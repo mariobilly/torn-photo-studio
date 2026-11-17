@@ -6,6 +6,30 @@ MP4, GIF or carousel slides.
 
 **Everything runs on your computer. No account, no API key, nothing is uploaded.**
 
+![Torn Photo Studio](docs/screenshot.jpg)
+
+<!-- videos:start -->
+## See it in action
+
+<p align="center"><a href="docs/videos/tutorial.mp4"><img src="docs/videos/tutorial.jpg" alt="How it works" width="640"></a><br><b>▶ <a href="docs/videos/tutorial.mp4">How it works</a></b> (0:56, with captions)</p>
+
+**Made with Torn Photo Studio, from public-domain portraits (The Met)**
+
+<table><tr>
+<td width="33%" align="center"><a href="docs/videos/examples/reel-torn-strips.mp4"><img src="docs/videos/examples/reel-torn-strips.gif" alt="3-photo reel, 9:16"></a><br><a href="docs/videos/examples/reel-torn-strips.mp4">3-photo reel, 9:16</a></td>
+<td width="33%" align="center"><a href="docs/videos/examples/story-ripped-in-half.mp4"><img src="docs/videos/examples/story-ripped-in-half.gif" alt="Ripped in half, 9:16"></a><br><a href="docs/videos/examples/story-ripped-in-half.mp4">Ripped in half, 9:16</a></td>
+<td width="33%" align="center"><a href="docs/videos/examples/cork-board-boil.mp4"><img src="docs/videos/examples/cork-board-boil.gif" alt="Cork board, boiling tears, 9:16"></a><br><a href="docs/videos/examples/cork-board-boil.mp4">Cork board, boiling tears, 9:16</a></td>
+</tr><tr>
+<td width="33%" align="center"><a href="docs/videos/examples/zine-slideshow.mp4"><img src="docs/videos/examples/zine-slideshow.gif" alt="Zine slideshow, 4:5"></a><br><a href="docs/videos/examples/zine-slideshow.mp4">Zine slideshow, 4:5</a></td>
+<td width="33%" align="center"><a href="docs/videos/examples/photo-dump-grid.mp4"><img src="docs/videos/examples/photo-dump-grid.gif" alt="Photo dump grid, 1:1"></a><br><a href="docs/videos/examples/photo-dump-grid.mp4">Photo dump grid, 1:1</a></td>
+<td width="33%" align="center"><a href="docs/videos/examples/wide-portrait-lineup.mp4"><img src="docs/videos/examples/wide-portrait-lineup.gif" alt="Mixed strips, 16:9"></a><br><a href="docs/videos/examples/wide-portrait-lineup.mp4">Mixed strips, 16:9</a></td>
+</tr></table>
+
+Click any picture to play the video. Example sources: public-domain paintings from
+[The Metropolitan Museum of Art Open Access](https://www.metmuseum.org/about-the-met/policies-and-documents/open-access)
+(CC0): [*Portrait of a Young Man*](https://www.metmuseum.org/art/collection/search/435581) by Antonello da Messina, [*Portrait of a Young Man*](https://www.metmuseum.org/art/collection/search/435664) by Biagio d'Antonio, [*Portrait of a Young Man*](https://www.metmuseum.org/art/collection/search/436769) by Jacometto, [*Portrait of a Young Man*](https://www.metmuseum.org/art/collection/search/437851) by Cosmè Tura, [*Portrait of a Woman*](https://www.metmuseum.org/art/collection/search/437859) by Giovanni di Francesco del Cervelliera, [*Portrait of a Woman*](https://www.metmuseum.org/art/collection/search/437000) by the Master of the Castello Nativity, [*Portrait of a Woman*](https://www.metmuseum.org/art/collection/search/436630) by Adriaen Hanneman, [*Portrait of a Man*](https://www.metmuseum.org/art/collection/search/437874) by Velázquez, [*Self-portrait*](https://www.metmuseum.org/art/collection/search/700489) by Sanford Robinson Gifford.
+<!-- videos:end -->
+
 ## Install
 
 You need:
@@ -122,6 +146,10 @@ export each type from the Export dialog.
 - [gifenc](https://github.com/mattdesl/gifenc) 1.0.3 by Matt DesLauriers (MIT), for GIF export.
 - Fonts from [Google Fonts](https://fonts.google.com/): Anton, Archivo, Archivo Black, Bebas Neue and JetBrains Mono
   (SIL Open Font License), Permanent Marker and Special Elite (Apache License 2.0).
+- Photos in the tutorial and examples: nine public-domain portraits from
+  [The Metropolitan Museum of Art Open Access](https://www.metmuseum.org/about-the-met/policies-and-documents/open-access)
+  (CC0), by Antonello da Messina, Biagio d'Antonio, Jacometto, Cosmè Tura, Giovanni di Francesco del Cervelliera, the
+  Master of the Castello Nativity, Adriaen Hanneman, Velázquez and Sanford Robinson Gifford (links above).
 
 ## Licence
 
