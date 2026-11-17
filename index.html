@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="torn-photo.ico">
+<title>Torn Photo Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Archivo+Black&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&family=Special+Elite&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="bar">
+    <div class="mark">Torn Photo <small>STUDIO · PAPER · CUTOUT · SCAN</small></div>
+    <div class="tools">
+      <button class="btn icon" id="undoBtn" type="button" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3 2 6l3 3"/><path d="M2 6h7.5a4 4 0 0 1 0 8H6"/></svg></button>
+      <button class="btn icon" id="redoBtn" type="button" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m11 3 3 3-3 3"/><path d="M14 6H6.5a4 4 0 0 0 0 8H10"/></svg></button>
+      <span class="sep"></span>
+      <button class="btn" id="safeBtn" type="button" aria-pressed="false" title="Show where Reels, TikTok and YouTube put their buttons">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="1.5" width="9" height="13" rx="1.5"/><path d="M3.5 4h9M3.5 11.5h9" stroke-dasharray="1.5 1.5"/></svg>Safe zones</button>
+      <button class="btn" id="compareBtn" type="button" title="Hold to see the original photo (B)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M8 1.5v13"/></svg>Hold to compare</button>
+      <button class="btn" id="tplBtn" type="button" title="Ready-made sequences">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="7" rx="1"/><rect x="9" y="2" width="5" height="4" rx="1"/><rect x="9" y="8" width="5" height="6" rx="1"/><rect x="2" y="11" width="5" height="3" rx="1"/></svg>Templates</button>
+      <button class="btn" id="shuffleBtn" type="button" title="New seed (R)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h3l6 8h3M2 12h3l1.5-2M9.5 6 11 4h3M12 2l2 2-2 2M12 10l2 2-2 2"/></svg>Shuffle</button>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="exportBtn" type="button">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2 11v3h12v-3"/></svg>Export</button>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <canvas id="cv" width="960" height="1200" aria-label="Torn photo preview"></canvas>
+    <span class="badge" id="badge" hidden>Original</span>
+    <p class="hint">Drop or paste photos · <b>Space</b> play · <b>R</b> shuffle · hold <b>B</b> compare · <b>Ctrl+Z</b> undo</p>
+    <p class="status" id="status" role="status"></p>
+  </main>
+
+  <section class="timeline" aria-label="Sequence">
+    <div class="transport">
+      <button class="btn icon" id="playBtn" type="button" title="Play sequence (Space)" aria-label="Play sequence">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg></button>
+      <span class="time" id="time"><b>00:00.0</b> / 00:00.0</span>
+      <input type="range" id="scrub" min="0" max="1" step="0.01" value="0" aria-label="Sequence position">
+      <button class="btn sm" id="coverBtn" type="button" title="Use what the preview shows as the cover image">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2" width="11" height="12" rx="1.5"/><path d="m2.5 11 3.5-3.5 3 3 2-2 2.5 2.5"/></svg>Set cover</button>
+      <span class="cover-info" id="coverInfo" hidden><span id="coverText"></span><button type="button" id="coverClear" aria-label="Clear cover" title="Clear cover">×</button></span>
+      <button class="btn sm" id="addBtn" type="button">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M3 8h10"/></svg>Add photos</button>
+    </div>
+    <ol class="strip" id="strip"></ol>
+  </section>
+
+  <aside class="panel" id="panel">
+    <section class="sec clip" id="clipSec">
+      <header>
+        <h2 id="clipTitle">Clip 1 of 1</h2>
+        <button class="mini" id="clipLeft" type="button" title="Move earlier" aria-label="Move clip earlier">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3 5 8l5 5"/></svg></button>
+        <button class="mini" id="clipRight" type="button" title="Move later" aria-label="Move clip later">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m6 3 5 5-5 5"/></svg></button>
+        <button class="mini" id="clipReplace" type="button" title="Replace photo" aria-label="Replace photo">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 6A5.5 5.5 0 0 1 13 4.5M13.5 10A5.5 5.5 0 0 1 3 11.5M13 1.5v3h-3M3 14.5v-3h3"/></svg></button>
+        <button class="mini" id="clipDup" type="button" title="Duplicate clip" aria-label="Duplicate clip">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg></button>
+        <button class="mini" id="clipRemove" type="button" title="Remove clip (Delete)" aria-label="Remove clip">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.7 9h5.6l.7-9"/></svg></button>
+      </header>
+      <div class="body">
+        <div class="ctl stack">
+          <label for="clipCaption">Caption</label>
+          <textarea id="clipCaption" rows="2" placeholder="Text shown on this photo"></textarea>
+        </div>
+        <div class="ctl">
+          <label for="clipLook">Look</label>
+          <select id="clipLook"><option value="seq">Same as sequence</option><option value="own">Own look for this clip</option></select>
+        </div>
+        <div class="ctl" id="clipDurRow">
+          <label for="clipDur">Duration</label><output id="clipDurOut" for="clipDur">3.0 s</output>
+          <input type="range" id="clipDur" min="0.5" max="10" step="0.1" value="3">
+        </div>
+        <div class="ctl" id="clipBeatsRow" hidden>
+          <label for="clipBeats">Length in beats</label><output id="clipBeatsOut" for="clipBeats">4</output>
+          <input type="range" id="clipBeats" min="1" max="32" step="1" value="4">
+        </div>
+        <div class="ctl">
+          <label for="clipZoom">Photo zoom</label><output id="clipZoomOut" for="clipZoom">1.00×</output>
+          <input type="range" id="clipZoom" min="1" max="4" step="0.01" value="1">
+        </div>
+        <div class="ctl">
+          <p class="note">Drag the preview to move the photo. Scroll over it to zoom.</p>
+          <button class="btn sm" type="button" id="clipFrameReset">Reset framing</button>
+        </div>
+        <div class="ctl">
+          <label for="clipSeed">Tear variation</label>
+          <div class="row">
+            <input type="number" id="clipSeed" min="0" max="9999" step="1" value="0">
+            <button class="btn sm icon" id="clipSeedShuffle" type="button" title="Random variation" aria-label="Random tear variation for this clip">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h3l6 8h3M2 12h3l1.5-2M9.5 6 11 4h3M12 2l2 2-2 2M12 10l2 2-2 2"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="presets">
+      <label class="lbl" for="preset" id="presetLbl">Look preset · all clips</label>
+      <div class="row">
+        <select id="preset"></select>
+        <button class="btn icon" id="savePreset" type="button" title="Save current look as preset" aria-label="Save current look as preset">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h8l2 2v10H3z"/><path d="M5.5 2v3.5h5V2M5 14V9.5h6V14"/></svg></button>
+        <button class="btn icon" id="delPreset" type="button" title="Delete this saved preset" aria-label="Delete saved preset" disabled>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5l.7 9h5.6l.7-9"/></svg></button>
+      </div>
+      <div class="row">
+        <button class="btn sm" id="copyPreset" type="button">Copy preset code</button>
+        <button class="btn sm" id="pastePreset" type="button">Load preset code</button>
+      </div>
+    </div>
+    <p class="lookbar" id="lookBar" hidden></p>
+    <div id="sections"></div>
+  </aside>
+</div>
+
+<input type="file" id="fileAdd" accept="image/*" multiple hidden>
+<input type="file" id="fileReplace" accept="image/*" hidden>
+<input type="file" id="fileBg" accept="image/*" hidden>
+<input type="file" id="fileTex" accept="image/*" hidden>
+<input type="file" id="fileMusic" accept="audio/*" hidden>
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+
+<script src="lib/mp4-muxer.js"></script>
+<script src="lib/gifenc.umd.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
